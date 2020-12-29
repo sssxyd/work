@@ -1,0 +1,39 @@
+su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7.noarch.rpm'
+
+su -c 'yum install foo'
+
+或者：yum install epel-release
+
+
+安装不依赖外部包的 erlang
+https://github.com/rabbitmq/erlang-rpm/releases
+
+rpm -Uvh erlang-*.centos.x86_64.rpm
+
+yum list installed | grep erlang
+
+再安装官网下载的 rabbitmq
+https://www.rabbitmq.com/
+
+yum install rabbitmq*.rpm
+
+或者
+https://www.rabbitmq.com/install-rpm.html
+
+rabbitmq-plugins enable rabbitmq_management
+
+rabbitmq-server 启动后再设置用户
+
+rabbitmqctl add_user yfw yaofangwang2014
+					 yibang ieseiQu2quahquai
+					 yizong  YZ_UjohT7aithee2Doo
+
+rabbitmqctl set_user_tags yfw administrator
+
+rabbitmqctl set_user_tags yizong administrator
+
+
+/etc/rabbitmq/rabbitmq.conf
+https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/master/docs/rabbitmq.conf.example
+
+https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/master/docs/rabbitmq.conf.example

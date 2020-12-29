@@ -1,0 +1,82 @@
+http://ossrs.net/srs.release/releases/
+
+yum install redhat-lsb
+
+https://ossrs.net/srs.release/releases/download.html
+wget http://ossrs.net/srs.release/releases/files/SRS-CentOS6-x86_64-latest.zip
+         https://ossrs.net/srs.release/releases/files/SRS-CentOS7-x86_64-3.0.123.zip
+
+bash INSTALL
+
+
+install success, you can:
+      sudo /etc/init.d/srs start
+srs root is /usr/local/srs
+
+vim /usr/local/srs/conf/srs.conf
+=================================================================
+listen              1935;
+max_connections     1000;
+srs_log_tank        file;
+srs_log_file        ./objs/srs.log;
+stats {
+    network         0;
+    disk            sda sdb xvda xvdb;
+}
+http_server {
+    enabled         on;
+    listen          8080;
+    dir             /yibang/webapp;
+}
+http_api {
+    enabled         on;
+    listen          1985;
+    crossdomain     on;
+}
+vhost __defaultVhost__ {
+    gop_cache       off;
+    queue_length    10;
+    min_latency     on;
+    mr {
+        enabled     off;
+    }
+    mw_latency      100;
+    tcp_nodelay     on;
+    http_remux {
+        enabled     on;
+        mount       [vhost]/[app]/[stream].flv;
+        hstrs       on;
+    }	
+    dvr {
+        enabled             on;
+        dvr_path            /yibang/webapp/file/inquiry/[app]/[stream].flv;
+        dvr_plan            session;
+        dvr_duration        60;
+        dvr_wait_keyframe   on;
+		time_jitter			full;
+    }
+
+}
+
+vhost hls.transcode.vhost.com {
+    transcode {
+        enabled     on;
+        ffmpeg      ffmpeg;
+        engine ff {
+            enabled         on;
+            vfilter {
+            }
+            vcodec          libx264;
+            vthreads        4;
+            vprofile        main;
+            vpreset         medium;
+            vparams {
+            }
+            acodec          libfdk_aac;
+            aparams {
+            }
+            output          rtmp://127.0.0.1:[port]/[app]?vhost=[vhost]/[stream]_[engine];
+        }
+    }
+}
+=================================================================

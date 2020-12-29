@@ -1,0 +1,24 @@
+﻿查看证书内容
+ openssl x509 -in ssl.pem -noout -text
+ 
+根证书、中级证书、服务器证书，三合一，写入同一个crt文件
+
+crt to pkcs12
+ openssl pkcs12 -export -in star.yaofangwang.com.crt -inkey yaofangwang.com.key -out star.yaofangwang.com.pfx
+ 
+openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt -certfile more.crt
+
+openssl – the command for executing OpenSSL
+pkcs12 – the file utility for PKCS#12 files in OpenSSL
+-export -out certificate.pfx – export and save the PFX file as certificate.pfx
+-inkey privateKey.key – use the private key file privateKey.key as the private key to combine with the certificate.
+-in certificate.crt – use certificate.crt as the certificate the private key will be combined with.
+-certfile more.crt – This is optional, this is if you have any additional certificates you would like to include in the PFX file.
+
+
+查看pfx证书
+openssl pkcs12 -info -in cert.pfx
+
+
+获取public key
+openssl s_client -connect the.host.name:443 | openssl x509 -pubkey -noout

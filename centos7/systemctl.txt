@@ -1,0 +1,16 @@
+systemctl list-unit-files
+systemctl enable xxx
+
+.service 文件地址：
+/usr/lib/systemd/system
+
+自启动：
+在 /etc/systemd/system/multi-user.target.wants/ 下创建 symlink
+Removed symlink /etc/systemd/system/multi-user.target.wants/zabbix-server.service.
+
+
+修改系统时区 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+修改java时区 cp /usr/share/zoneinfo/Asia/Shanghai /etc/timezone
+timedatectl status
+timedatectl set-timezone Asia/Shanghai
+

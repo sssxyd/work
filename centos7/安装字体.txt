@@ -1,0 +1,28 @@
+yum -y install fontconfig
+
+fc-list 查看现有字体
+
+copy fonts to /etc/fonts/xxx
+
+chmod -R 755 /usr/share/fonts/xxx
+
+接下来需要安装ttmkfdir来搜索目录中所有的字体信息，并汇总生成fonts.scale文件，输入命令：
+
+yum -y install ttmkfdir
+
+
+ttmkfdir -e /usr/share/X11/fonts/encodings/encodings.dir
+
+vi /etc/fonts/fonts.conf
+
+        <dir>/usr/share/X11/fonts/TTF</dir> 
+        <dir>/usr/local/share/fonts</dir>
+        <dir>/usr/share/fonts/chinese</dir>
+        <dir prefix="xdg">fonts</dir>
+
+		
+刷新内存中的字体缓存，这样就不用reboot重启了：
+fc-cache
+
+
+fc-list 查看现有字体

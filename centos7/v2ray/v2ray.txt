@@ -1,0 +1,4 @@
+安装
+bash <(curl -L -s https://install.direct/go.sh)
+
+配置文件目录：/etc/v2ray/config.json

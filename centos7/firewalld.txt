@@ -1,0 +1,7 @@
+﻿永久的开放需要的端口
+
+sudo firewall-cmd  --add-port=3000/tcp --permanent
+sudo firewall-cmd --reload
+之后检查新的防火墙规则
+
+firewall-cmd --list-all

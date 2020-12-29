@@ -1,0 +1,42 @@
+安装JVM调试工具
+yum list --showduplicate | grep java-1.8 | grep devel
+yum install java-1.8.0-openjdk-devel.x86_64
+
+
+1. 找到 ProcessId 如： java 进程 27889
+	 ps -ef | grep java
+
+2. 查看该进程里的线程运行情况
+	ps -mp 27889 -o user,%cpu,tid,time | sort -rn -k2 | head -n10
+
+    找到问题线程，记录其 tid
+
+3. 将问题线程ID转换为 16 进制
+	Printf “%x\n” tid
+
+
+4. jstack查看  jstack 27889 | grep 16进制的tid
+如果没有jstack，则安装： yum install java-1.8.0-openjdk-devel
+
+
+
+
+
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
+
+
+遍历每一行，累加第五列不同的值出现的次数，最后打印出来
+awk '{ Ary[$5]++ } END { for (key in Ary) { print key, Ary[key] } }' lsof.log 
+
+lsof -c java | awk '{ Ary[$5]++ } END { for (key in Ary) { print key, Ary[key] } }'
+
+awk 内建变量 
+NR 表示从awk开始执行后，按照记录分隔符读取的数据次数，默认的记录分隔符为换行符，因此默认的就是读取的数据行数，NR可以理解为Number of Record的缩写。
+FNR 在awk处理多个输入文件的时候，在处理完第一个文件后，NR并不会从1开始，而是继续累加，因此就出现了FNR，每当处理一个新文件的时候，FNR就从1开始计数，FNR可以理解为File Number of Record。
+（NR，FNR，都用来记录行号）
+NF 表示目前的记录被分割的字段的数目，NF可以理解为Number of Field
+FILENAME  文件名
+
+
+查看top
+top -p `pgrep -d "," java`

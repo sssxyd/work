@@ -1,0 +1,25 @@
+﻿df -hl
+
+分区，按默认的选
+fdisk /dev/vdb
+n new partition
+
+fdisk -l
+
+格式化
+mkfs.ext4  /dev/vdb1
+
+
+mount  source  target
+
+/etc/fstab
+
+#
+# /etc/fstab
+# Created by anaconda on Tue Jun 27 10:03:28 2017
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+UUID=7c4fce5d-f8f7-4ed6-8463-f2bd22d0ddea /                       ext4    defaults        1 1
+/dev/xvdb1      /storage        ext4    defaults        1 2

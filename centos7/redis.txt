@@ -1,0 +1,119 @@
+﻿-------------------------------------------------------
+使用remi源安装redis
+
+yum install epel-release yum-utils
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum-config-manager --enable remi
+
+yum install redis
+systemctl enable redis
+
+--------------------------------------------------------
+vim /etc/yum.conf
+注释掉
+exclude=kernel*
+否则安装gcc会不成功
+
+yum install kernel-headers 更新linux
+yum install gcc make 安装编译器
+
+
+https://linoxide.com/storage/install-redis-server-centos-7/
+
+
+启动脚本		/etc/init.d/redis_6379
+=============================================
+#!/bin/sh
+#
+# Simple Redis init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem.
+
+### BEGIN INIT INFO
+# Provides:     redis_6379
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Redis data structure server
+# Description:          Redis data structure server. See https://redis.io
+### END INIT INFO
+
+REDISPORT=6379
+EXEC=/data/redis/bin/redis-server
+CLIEXEC=/data/redis/bin/redis-cli
+
+PIDFILE=/var/run/redis_${REDISPORT}.pid
+CONF="/data/redis/conf/redis_${REDISPORT}.conf"
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ]
+        then
+                echo "$PIDFILE exists, process is already running or crashed"
+        else
+                echo "Starting Redis server..."
+                $EXEC $CONF
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ]
+        then
+                echo "$PIDFILE does not exist, process is not running"
+        else
+                PID=$(cat $PIDFILE)
+                echo "Stopping ..."
+                $CLIEXEC -p $REDISPORT shutdown
+                while [ -x /proc/${PID} ]
+                do
+                    echo "Waiting for Redis to shutdown ..."
+                    sleep 1
+                done
+                echo "Redis stopped"
+        fi
+        ;;
+    *)
+        echo "Please use start or stop as first argument"
+        ;;
+esac
+=============================================
+
+service 文件   /etc/systemd/system/multi-user.target.wants/redis_6379.service
+=============================================
+[Unit]
+Description=Redis on port 6379
+
+[Service]
+ExecStart=/etc/init.d/redis_6379 start
+ExecStop=/etc/init.d/redis_6379 stop
+Type=notify
+User=redis
+Group=redis
+RuntimeDirectory=redis
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
+
+
+设置密码 /etc/redis/6379.conf
+# requirepass foobared
+requirepass yaofangwang2014!@#
+
+=============================================
+
+[Unit]
+Description=Redis persistent key-value database
+After=network.target
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/data/redis/bin/redis-server /etc/redis.conf --supervised systemd
+ExecStop=/usr/libexec/redis-shutdown
+Type=notify
+User=redis
+Group=redis
+RuntimeDirectory=redis
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
+

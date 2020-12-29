@@ -1,0 +1,32 @@
+﻿yum localinstall mysql57-community-release-el7-11.noarch.rpm 
+
+将mysql残余文件清理掉
+mv /var/lib/mysql /var/lib/mysql_old_backup
+
+yum install mysql-community-server
+
+systemctl start mysqld
+
+grep 'temporary password' /var/log/mysqld.log
+
+mysql -u root -p
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'YZ_yi6iem4bi8ooGh1e';
+
+CREATE USER 'root'@'%' IDENTIFIED BY 'YZ_yi6iem4bi8ooGh1e';
+	or
+ALTER USER 'root'@'%' IDENTIFIED BY 'YZ_yi6iem4bi8ooGh1e';
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'Yz_Au8xeipa' WITH GRANT OPTION;
+
+show variables like 'lower%';
+vim my.conf
+lower_case_table_names = 1
+
+
+
+cp -R /var/lib/mysql /storage/
+chown -R mysql:mysql /storage/mysql/
+vim /etc/my.cnf
+
+datadir=/storage/mysql

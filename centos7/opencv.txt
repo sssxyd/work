@@ -1,0 +1,34 @@
+﻿opencv centos java版本编译
+
+如果有gcc linux版本问题，那么修改 /etc/yum.conf
+注释掉队 kernel kernel-devel 的exclude
+yum install kernel-headers kernel-devel
+
+yum install cmake gcc gcc-c++ gtk+-devel gimp-devel gimp-devel-tools gimp-help-browser zlib-devel libtiff-devel libjpeg-devel libpng-devel gstreamer-devel libavc1394-devel libraw1394-devel libdc1394-devel jasper-devel jasper-utils swig python libtool nasm
+
+
+yum groupinstall "Development Tools"
+
+检查pytho版本，必须2.7及以上
+
+下载opencv源码，
+https://github.com/opencv/opencv/archive/3.4.1.zip
+在源码目录下新建build目录
+mkdir build && cd build
+
+配置
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+
+编译
+make  
+sudo make install
+
+===服务器安装，到这来已经足够了。
+
+生成java
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -DBUILD_TESTS=OFF ..  
+make -j8  
+sudo make install
+
+在build/lib 目录下找到对应的so
+在build/bin 目录找到对应的jar

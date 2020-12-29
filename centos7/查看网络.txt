@@ -1,0 +1,6 @@
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
+
+lsof -i:18280
+
+
+netstat -ant | grep TIME_WAIT

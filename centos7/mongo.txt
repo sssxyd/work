@@ -1,0 +1,48 @@
+vim /etc/yum.repos.d
+
+新建 repo 文件 mongodb.repo， 使用阿里云镜像
+[mongodb-org-3.6]
+name=MongoDB Repository
+baseurl=http://mirrors.aliyun.com/mongodb/yum/redhat/7Server/mongodb-org/3.6/x86_64/
+gpgcheck=0
+enabled=1
+
+
+yum install mongodb-org
+
+// 迁移mongodb数据存储
+mkdir /storage/mongo
+chown mongod:mongod /storage/mongo
+vim /etc/mongod.conf
+dbPath: /var/lib/mongo		
+dbPath: /storage/mongo
+
+
+
+net:
+  port: 27017
+  bindIp: 127.0.0.1,192.168.0.143
+  
+vim /etc/mongod.conf
+#security:
+security.authorization: enabled
+
+
+use admin
+db.createUser({user: "root",pwd: "YZ_lohthoaxieGhoo9R",roles: [ { role: "root", db: "admin" } ]})
+
+db.createUser({user: "root",pwd: "YZ_lohthoaxieGhoo9R",roles: [ { role: "userAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" } ]})
+use yibang
+db.createUser({user: "yibang",pwd: "YZ=wahloileeX0sahph",roles: [ { role: "readWrite", db: "yibang" } ]})
+use yizong
+db.createUser({user: "yizong",pwd: "YZ=wahloileeX0sahph",roles: [ { role: "readWrite", db: "yizong" } ]})
+
+his=mongodb://yibang:YZ=wahloileeX0sahph@192.168.0.143:27017/yizong
+
+
+
+mongodump --uri="mongodb://yizong:YZ=sheichei2Iechied@127.0.0.1:37485/yizong" -o /data/backup/yizong
+tar -Jcvf yizong.tar.xz ./yizong/
+
+
+mongorestore --host 127.0.0.1:37485 --username yizong --password YZ=sheichei2Iechied --authenticationDatabase yizong --db yizong /root/yizong

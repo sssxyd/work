@@ -1,0 +1,23 @@
+用淘宝的mirror代替被墙的google
+npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
+npm i puppeteer
+
+安装chrome依赖项
+1.yum install libXScrnSaver
+  yum install libXScrnSaver-devel
+
+2.yum install epel-release
+
+3.yum install libappindicator-gtk3
+
+编译安装
+yum install gcc gcc-c++
+wget
+
+   ./configure  --prefix=/usr/local/node  
+    make  
+    make install
+	
+	
+ln -s /usr/local/node/bin/node node
+ln -s /usr/local/node/bin/npm npm

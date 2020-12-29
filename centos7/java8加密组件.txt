@@ -1,0 +1,16 @@
+发行版要点说明
+IANA Data 2018e
+JDK 8u191 
+更改：禁用了所有 DES TLS 密码套件
+基于 DES 的 TLS 密码套件被视为过时，不应再使用。
+默认情况下，在 SunJSSE 实现中通过将 "DES" 标识符添加到 jdk.tls.disabledAlgorithms 安全属性来停用基于 DES 的密码套件。
+通过从 java.security 文件包含的 jdk.tls.disabledAlgorithms 安全属性中删除 "DES"，或者动态调用 Security.setProperty() 方法，可以重新激活这些密码套件。
+在这两种情况下，重新启用 DES 后必须使用 SSLSocket.setEnabledCipherSuites() 或 SSLEngine.setEnabledCipherSuites() 方法将基于 DES 的密码套件添加到启用的密码套件列表。
+请注意，在此更改之前，已通过 jdk.tls.disabledAlgorithms 安全属性禁用了 DES40_CBC（但不是所有 DES）套件。
+请参阅 JDK-8208350
+
+windosxp tlsv1 连接java时，如果握手失败，可能是加密组件不支持，需求开启java方的支持
+
+/{Java_Home}/jre/lib/security/java.security
+修改jdk.tls.disabledAlgorithms
+移除其中的 3DES_EDE_CBC
